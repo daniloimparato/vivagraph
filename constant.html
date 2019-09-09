@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -14,55 +15,60 @@
       width: 100%;
       height: 100%;
     }
-    body { overflow: hidden; }
 
-    #graphContainer > svg {
+    body {
+      overflow: hidden;
+    }
+
+    #graphContainer>svg {
       width: 100%;
       height: 100%;
     }
   </style>
 </head>
+
 <body>
   <div id='graphContainer'></div>
   <script>
-  fetch('patricia.json')
-    .then((response) => response.text())
-    .then((jsonText) => {
+    fetch('patricia.json')
+      .then((response) => response.text())
+      .then((jsonText) => {
         var graph = Viva.Graph.serializer().loadFromJSON(jsonText, function nodeLoadTransform(node) {
-                                                            return { id: node.id, data: {size: node.size, x: node.x, y: node.y} };
-                                                        },
-                                                        function linkLoadTransform(link) {
-                                                            return { fromId: link.fromId, toId: link.toId };
-                                                        });
+          return { id: node.id, data: { size: node.size, x: node.x, y: node.y } };
+        },
+          function linkLoadTransform(link) {
+            return { fromId: link.fromId, toId: link.toId };
+          });
 
-        graph.forEachNode(function(node) {
-            console.log(node)
-            if(node.links == null) graph.removeNode(node.id);
+        graph.forEachNode(function (node) {
+          console.log(node)
+          if (node.links == null) graph.removeNode(node.id);
         });
 
         var layout = Viva.Graph.Layout.constant(graph);
 
-        layout.placeNode(function(node) {
-            return {x: node.data.x*1000, y: node.data.y*1000};
+        layout.placeNode(function (node) {
+          return { x: node.data.x * 1000, y: node.data.y * 1000 };
         });
 
         // var graphics = Viva.Graph.View.webglGraphics();
         var graphics = Viva.Graph.View.svgGraphics();
-        graphics.node(function(node){
-            return Viva.Graph.svg('circle').attr('r', Math.sqrt(node.data.size*100));
-        }).placeNode(function(nodeUI, pos){
-            nodeUI.attr( "cx", pos.x).attr("cy", pos.y);
+        graphics.node(function (node) {
+          return Viva.Graph.svg('circle').attr('r', Math.sqrt(node.data.size * 100));
+        }).placeNode(function (nodeUI, pos) {
+          nodeUI.attr("cx", pos.x).attr("cy", pos.y);
         });
 
         var renderer = Viva.Graph.View.renderer(graph,
-            {
-                container  : document.getElementById('graphContainer'),
-                graphics   : graphics,
-                layout     : layout
-            });
-            
+          {
+            container: document.getElementById('graphContainer'),
+            graphics: graphics,
+            layout: layout
+          });
+
         renderer.run();
-    });
+      });
   </script>
 </body>
+
 </html>

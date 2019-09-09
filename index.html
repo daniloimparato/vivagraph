@@ -9,7 +9,7 @@
   <script src="vivagraph.js"></script>
   <script src="jquery-ajax.min.js"></script>
   <style type='text/css'>
-    #graphContainer {
+    /* #graphContainer {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -19,8 +19,15 @@
     #graphContainer > svg {
       width: 100%;
       height: 100%;
-    }
+    } */
     
+    #graph-container {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      overflow: hidden;
+      margin: 0px;
+    }
     .graph-overlay {
       position: absolute;
       left: 0;
@@ -43,7 +50,7 @@
   </style>
 </head>
 <body>
-  <div id='graphContainer'></div>
+  <div id='graph-container'></div>
   <div class="graph-overlay"></div>
   <div class="control">
     <p>Spring length:</p>

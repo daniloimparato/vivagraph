@@ -210,13 +210,18 @@ function startMultiSelect(graph, renderer, layout, selectedNodes) {
     function higlightIfInside(node) {
       var nodeUI = graphics.getNodeUI(node.id);
       if (isInside(node.id, topLeft, bottomRight)) {
-        console.log(node);
+
+        node.selected = true;
+
         nodeUI.color = 0xFFA500ff;
 
         selectedNodes.push(node);
+        
+        console.log(node);
 
         // nodeUI.size = 20;
       } else {
+        node.selected = false;
         nodeUI.color = 0x000000ff;
         // nodeUI.size = 10;
       }

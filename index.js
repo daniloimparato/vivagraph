@@ -75,26 +75,49 @@ fetch('patricia.json')
     var initialPosition = {x: 0, y:0};
     var movePosition = {x: 0, y:0};
 
-    events.mouseEnter(function (node) {
-      console.log('Mouse entered node: ', node);
-    }).mouseLeave(function (node) {
-      console.log('Mouse left node: ', node);
-    }).dblClick(function (node) {
-      console.log('Double click on node: ', node);
-    }).click(function (node) {
-      console.log('Single click on node: ', node);
-    }).mouseDown(function (node) {
+    // events.mouseEnter(function (node) {
+    //   console.log('Mouse entered node: ', node);
+    // }).mouseLeave(function (node) {
+    //   console.log('Mouse left node: ', node);
+    // }).dblClick(function (node) {
+    //   console.log('Double click on node: ', node);
+    // }).click(function (node) {
+    //   console.log('Single click on node: ', node);
+    // }).mouseDown(function (node) {
+    //   console.log('Mouse down on node: ', node);
+    //   initialPosition = layout.getNodePosition(node.id);
+    // }).mouseMove(function (node) {
+    //   console.log('Mouse move on node: ', node);
+    //   graph.forEachNode(function(eachNode){
+    //     if(selectedNodes.map(selNodes=>{selNodes.id}).includes(eachNode.id)) {
+    //       var currPos = layout.getNodePosition(eachNode.id);
+    //       var diffX = layout.getNodePosition(node.id).x - initialPosition.x;
+    //       var diffY = layout.getNodePosition(node.id).y - initialPosition.y;
+    //       layout.setNodePosition(eachNode, currPos.x + diffX, currPos.y + diffY);
+    //     }
+    //   });
+    //   // movePosition = layout.getNodePosition(node.id);
+    // }).mouseUp(function (node) {
+    //   console.log('Mouse up on node: ', node);
+    // });
+
+    events.mouseDown(function (node) {
       console.log('Mouse down on node: ', node);
       initialPosition = layout.getNodePosition(node.id);
     }).mouseMove(function (node) {
       console.log('Mouse move on node: ', node);
       graph.forEachNode(function(eachNode){
-        if(selectedNodes.map(selNodes=>{selNodes.id}).includes(eachNode.id)) {
+        console.log(selectedNodes);
+        if(selectedNodes.some(selectedNode => selectedNode.id == eachNode.id )){
           var currPos = layout.getNodePosition(eachNode.id);
-          var diffX = layout.getNodePosition(node.id).x - initialPosition.x;
-          var diffY = layout.getNodePosition(node.id).y - initialPosition.y;
-          layout.setNodePosition(eachNode, currPos.x + diffX, currPos.y + diffY);
+          layout.setNodePosition(eachNode, currPos.x + 10, currPos.y + 10);
         }
+        // if(selectedNodes.map(selNodes=>{selNodes.id}).includes(eachNode.id)) {
+        //   var currPos = layout.getNodePosition(eachNode.id);
+        //   var diffX = layout.getNodePosition(node.id).x - initialPosition.x;
+        //   var diffY = layout.getNodePosition(node.id).y - initialPosition.y;
+        //   layout.setNodePosition(eachNode, currPos.x + diffX, currPos.y + diffY);
+        // }
       });
       // movePosition = layout.getNodePosition(node.id);
     }).mouseUp(function (node) {

@@ -72,8 +72,7 @@ fetch('patricia.json')
 
     var selectedNodes = [];
 
-    var initialPosition = {x: 0, y:0};
-    var movePosition = {x: 0, y:0};
+    var initialPosition = {x: 0, y: 0};
 
     // events.mouseEnter(function (node) {
     //   console.log('Mouse entered node: ', node);
@@ -101,27 +100,29 @@ fetch('patricia.json')
     //   console.log('Mouse up on node: ', node);
     // });
 
-    events.mouseDown(function (node) {
-      console.log('Mouse down on node: ', node);
-      initialPosition = layout.getNodePosition(node.id);
-    }).mouseMove(function (node) {
-      console.log('Mouse move on node: ', node);
-      graph.forEachNode(function(eachNode){
-        console.log(selectedNodes);
-        if(selectedNodes.some(selectedNode => selectedNode.id == eachNode.id )){
-          var currPos = layout.getNodePosition(eachNode.id);
-          layout.setNodePosition(eachNode, currPos.x + 10, currPos.y + 10);
+    events.mouseDown(function (draggedNode) {
+      initialPosition = Object.assign({}, layout.getNodePosition(draggedNode.id));
+      console.log(`Mouse down on node: ${draggedNode.id} / ${JSON.stringify(initialPosition)}`);
+    }).mouseMove(function(draggedNode) {
+      //lala
+    }).mouseUp(function (draggedNode) {
+      
+      graph.forEachNode(function(iteratedNode){
+        // if(iteratedNode.selected && draggedNode){
+        if(iteratedNode.selected && draggedNode && iteratedNode.id != draggedNode.id){
+          console.log(`Mouse up on node: ${draggedNode.id} / ${JSON.stringify(layout.getNodePosition(draggedNode.id))}`);
+          console.log(`Initial position: ${JSON.stringify(initialPosition)}`)
+
+          var iteratedNodePosition = layout.getNodePosition(iteratedNode.id);
+
+          var draggedNodePosition = layout.getNodePosition(draggedNode.id);
+
+          layout.setNodePosition(iteratedNode.id,
+            iteratedNodePosition.x + (draggedNodePosition.x - initialPosition.x),
+            iteratedNodePosition.y + (draggedNodePosition.y - initialPosition.y));
         }
-        // if(selectedNodes.map(selNodes=>{selNodes.id}).includes(eachNode.id)) {
-        //   var currPos = layout.getNodePosition(eachNode.id);
-        //   var diffX = layout.getNodePosition(node.id).x - initialPosition.x;
-        //   var diffY = layout.getNodePosition(node.id).y - initialPosition.y;
-        //   layout.setNodePosition(eachNode, currPos.x + diffX, currPos.y + diffY);
-        // }
       });
-      // movePosition = layout.getNodePosition(node.id);
-    }).mouseUp(function (node) {
-      console.log('Mouse up on node: ', node);
+
     });
 
     renderer.run();
